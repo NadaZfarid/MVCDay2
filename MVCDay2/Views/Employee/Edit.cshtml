@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+<h1>Edit Employee</h1>
+
+<form action="/Employee/EditEmployee">
+    <input id="id" name="id" value="@Model.SSN" hidden />
+
+    <input id="FirstName" name="SSN" type="text" value="@Model.SSN" style="visibility:hidden" /><br />
+    <label>First Name</label>
+    <input id="Fname" name="Fname" type="text" value="@Model.Fname" /><br />
+
+    <label>Last Name</label>
+    <input id="Lname" name="Lname" type="text" value="@Model.LName" /><br />
+    <label>Address</label>
+    <input id="Address" name="Address" type="text" value="@Model.Address" /><br />
+
+    <label>Birth Date</label>
+    <input id="BDate" name="BDate" type="date" value="@Model.BDate" /><br />
+
+    <label>Salary</label>
+    <input id="Salary" name="Salary" type="number" value="@Model.Salary" /><br />
+    <label>Gender</label>
+    <input id="Gender" name="Gender" type="text" value="@Model.Gender" /><br />
+
+    @*<label>Supervisor</label>
+    <select id="super" name="Super_SSN">
+        <option value="">Choose Supervisor</option>
+        @foreach (var employee in Model)
+        {
+            @if (employee.SSN == Model.Super_SSN)
+            {
+                <option value="@employee.SSN" selected>@employee.Fname</option>
+            }
+            else
+            {
+            <option value="@employee.SSN">@employee.Fname</option>
+            }
+        }
+    </select><br />*@
+
+    <input type="submit" value="Edit" />
+</form>

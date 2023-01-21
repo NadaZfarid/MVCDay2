@@ -1,0 +1,37 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+<h1>Add Course</h1>
+
+<form action="/Employee/AddEmployee">
+    <label>First Name</label>
+    <input id="fname" name="fname" type="text" /><br />
+
+    <label>Last Name</label>
+    <input id="Lname" name="Lname" type="text" /><br />
+    <label>Address</label>
+    <input id="Address" name="Address" type="text" /><br />
+    
+    <label>Birth Date</label>
+    <input id="BDate" name="BDate" type="date" /><br />
+
+    <label>Salary</label>
+    <input id="salary" name="Salary" type="number" /><br />
+    <label>Gender</label>
+    <input id="Gender" name="Gender" type="radio" value="F" />F
+    <input id="Gender" name="Gender" type="radio" value="M" />M<br />
+
+    <label>Supervisor</label>
+    <select id="super" name="Super_SSN">
+        <option value="">Choose Supervisor</option>
+        @foreach (var employee in Model)
+        {
+            <option value="@employee.SSN">@employee.Fname</option>
+        }
+    </select><br />
+
+    <input type="submit" value="Add" />
+</form>
