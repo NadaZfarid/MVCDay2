@@ -1,0 +1,35 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+<h1>Add Dependent</h1>
+
+<form action="/Dependent/AddDependent">
+    <table>
+        <tr><td><label> Name</label></td>
+        <td><input id="name" name="name" type="text" /></td>
+            </tr>
+
+        <tr>
+            <td><label>RelationShip</label></td>
+        <td><input id="Relationship" name="Relationship" type="text" /></td>
+       </tr>
+
+        <tr>
+            <td><label>Birth Date</label></td>
+            <td><input id="BDate" name="BDate" type="date" /></td>
+        </tr>
+
+
+        <tr>
+            <td><label>Gender</label></td>
+        <td><input id="Gender" name="Gender" type="radio" value="F" />F</td>
+        <td><input id="Gender" name="Gender" type="radio" value="M" />M</td>
+        </tr>
+        <tr><td><input id="Emp_SSN" name="Emp_SSN" type="number" value="@Context.Session.GetInt32("SSN")" style="visibility:hidden" /></td></tr>
+
+    </table>
+    <input type="submit" value="Add" />
+</form>

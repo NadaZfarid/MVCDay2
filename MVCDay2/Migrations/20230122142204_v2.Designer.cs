@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCDay2.Migrations
 {
     [DbContext(typeof(CompanyDbContext))]
-    [Migration("20230121191844_v1")]
-    partial class v1
+    [Migration("20230122142204_v2")]
+    partial class v2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,12 +33,22 @@ namespace MVCDay2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Number"));
 
+                    b.Property<int?>("Manage_SSN")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("Date");
+
                     b.HasKey("Number");
+
+                    b.HasIndex("Manage_SSN")
+                        .IsUnique()
+                        .HasFilter("[Manage_SSN] IS NOT NULL");
 
                     b.ToTable("Departments");
                 });
@@ -48,7 +58,7 @@ namespace MVCDay2.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Emp_SSN")
+                    b.Property<int?>("Emp_SSN")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("BDate")
@@ -71,7 +81,7 @@ namespace MVCDay2.Migrations
 
             modelBuilder.Entity("MVCDay2.Models.Dept_loc", b =>
                 {
-                    b.Property<int>("Dept_id")
+                    b.Property<int?>("Dept_id")
                         .HasColumnType("int");
 
                     b.Property<string>("Locatoin")
@@ -84,10 +94,10 @@ namespace MVCDay2.Migrations
 
             modelBuilder.Entity("MVCDay2.Models.Emp_Proj", b =>
                 {
-                    b.Property<int>("Emp_SSN")
+                    b.Property<int?>("Emp_SSN")
                         .HasColumnType("int");
 
-                    b.Property<int>("Proj_Id")
+                    b.Property<int?>("Proj_Id")
                         .HasColumnType("int");
 
                     b.Property<int>("Hours")
@@ -115,8 +125,10 @@ namespace MVCDay2.Migrations
                     b.Property<DateTime?>("BDate")
                         .HasColumnType("Date");
 
+                    b.Property<int?>("Dept_id")
+                        .HasColumnType("int");
+
                     b.Property<string>("Fname")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -125,19 +137,23 @@ namespace MVCDay2.Migrations
                         .HasColumnType("nvarchar(1)");
 
                     b.Property<string>("LName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<decimal>("Salary")
+                    b.Property<decimal?>("Salary")
                         .HasColumnType("money");
 
                     b.Property<int?>("Super_SSN")
                         .HasColumnType("int");
 
+                    b.Property<int?>("manageNumber")
+                        .HasColumnType("int");
+
                     b.HasKey("SSN");
 
                     b.HasIndex("Super_SSN");
+
+                    b.HasIndex("manageNumber");
 
                     b.ToTable("Employees");
                 });
@@ -150,7 +166,7 @@ namespace MVCDay2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Number"));
 
-                    b.Property<int>("Dept_id")
+                    b.Property<int?>("Dept_id")
                         .HasColumnType("int");
 
                     b.Property<string>("Location")
@@ -170,15 +186,24 @@ namespace MVCDay2.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("MVCDay2.Models.Dependent", b =>
+            modelBuilder.Entity("MVCDay2.Models.Department", b =>
                 {
                     b.HasOne("MVCDay2.Models.Employee", "employee")
+                        .WithOne("department")
+                        .HasForeignKey("MVCDay2.Models.Department", "Manage_SSN");
+
+                    b.Navigation("employee");
+                });
+
+            modelBuilder.Entity("MVCDay2.Models.Dependent", b =>
+                {
+                    b.HasOne("MVCDay2.Models.Employee", "Dep_employee")
                         .WithMany("Dependents")
                         .HasForeignKey("Emp_SSN")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("employee");
+                    b.Navigation("Dep_employee");
                 });
 
             modelBuilder.Entity("MVCDay2.Models.Dept_loc", b =>
@@ -194,7 +219,7 @@ namespace MVCDay2.Migrations
 
             modelBuilder.Entity("MVCDay2.Models.Emp_Proj", b =>
                 {
-                    b.HasOne("MVCDay2.Models.Employee", "employee")
+                    b.HasOne("MVCDay2.Models.Employee", "Pemployee")
                         .WithMany("Emp_Projs")
                         .HasForeignKey("Emp_SSN")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -206,27 +231,31 @@ namespace MVCDay2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("employee");
+                    b.Navigation("Pemployee");
 
                     b.Navigation("project");
                 });
 
             modelBuilder.Entity("MVCDay2.Models.Employee", b =>
                 {
-                    b.HasOne("MVCDay2.Models.Employee", "employee")
-                        .WithMany()
+                    b.HasOne("MVCDay2.Models.Employee", "super")
+                        .WithMany("supers")
                         .HasForeignKey("Super_SSN");
 
-                    b.Navigation("employee");
+                    b.HasOne("MVCDay2.Models.Department", "manage")
+                        .WithMany("Employees")
+                        .HasForeignKey("manageNumber");
+
+                    b.Navigation("manage");
+
+                    b.Navigation("super");
                 });
 
             modelBuilder.Entity("MVCDay2.Models.Project", b =>
                 {
                     b.HasOne("MVCDay2.Models.Department", "department")
                         .WithMany("Projects")
-                        .HasForeignKey("Dept_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Dept_id");
 
                     b.Navigation("department");
                 });
@@ -234,6 +263,8 @@ namespace MVCDay2.Migrations
             modelBuilder.Entity("MVCDay2.Models.Department", b =>
                 {
                     b.Navigation("Dept_Locs");
+
+                    b.Navigation("Employees");
 
                     b.Navigation("Projects");
                 });
@@ -243,6 +274,10 @@ namespace MVCDay2.Migrations
                     b.Navigation("Dependents");
 
                     b.Navigation("Emp_Projs");
+
+                    b.Navigation("department");
+
+                    b.Navigation("supers");
                 });
 
             modelBuilder.Entity("MVCDay2.Models.Project", b =>

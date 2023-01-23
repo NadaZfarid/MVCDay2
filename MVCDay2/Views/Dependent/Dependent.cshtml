@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+    
+}
+<h1> Dependent : </h1>
+<p>@TempData["msg"]</p>
+@foreach (var dependent in Model)
+{
+
+    <ul>
+        <li>Name: @dependent.Name</li>
+        <li>Gender: @dependent.Gender</li>
+        <li>BDate: @dependent.BDate</li>
+        <li>Relationship: @dependent.Relationship</li>
+        <li><a href="/Dependent/Edit/@dependent.DepId">Edit</a></li>
+        <li><a href="/Dependent/Delete/@dependent.DepId">Delete</a></li>
+    </ul>
+    <hr />
+}
+
+
+<a href="/Dependent/Add">Add Dependent</a>

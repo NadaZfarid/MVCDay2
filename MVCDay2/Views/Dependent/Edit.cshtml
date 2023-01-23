@@ -1,0 +1,27 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+<h1>Edit Dependent</h1>
+
+<form action="/Dependent/EditDependent">
+    <input id="Dep_id" name="DepId" type="number" value="@Model.DepId" style="visibility:hidden" /><br />
+
+    <label> Name</label>
+    <input id="name" name="name" type="text" value= "@Model.Name"/><br />
+
+    <label>RelationShip</label>
+    <input id="Relationship" name="Relationship" type="text" value="@Model.Relationship" /><br />
+
+    <label>Birth Date</label>
+    <input id="BDate" name="BDate" type="text" value="@Model.BDate" /><br />
+    <label>Gender</label>
+    <input id="Gender" name="Gender" type="text" value="@Model.Gender" /><br />
+
+    <input id="Emp_SSN" name="Emp_SSN" type="number" value="@Context.Session.GetInt32("SSN")" style="visibility:hidden" /><br />
+
+
+    <input type="submit" value="Edit" />
+</form>

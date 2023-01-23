@@ -9,6 +9,7 @@ namespace MVCDay2.Models
         {
             Dependents = new List<Dependent>();
             Emp_Projs = new List<Emp_Proj>();
+            supers= new List<Employee>();
         }
         [Key]
         public int SSN { get; set; }
@@ -25,11 +26,18 @@ namespace MVCDay2.Models
         [Column(TypeName = "money")]
 
         public double? Salary { get; set; }
-        public virtual Employee employee { get; set; }
-        [ForeignKey("employee")]
+        public virtual Employee super { get; set; }
+        [ForeignKey("super")]
         public int? Super_SSN { get; set; }
-        public virtual List<Dependent> Dependents { get; set; }
-        public virtual List<Emp_Proj> Emp_Projs { get; set; }
+        public virtual List<Dependent>? Dependents { get; set; }
+        public virtual List<Emp_Proj>? Emp_Projs { get; set; }
+
+        public virtual List<Employee>? supers { get; set; }
+
+        public virtual Department? department { get; set; }
+        [ForeignKey("department")]
+        public int? Dept_id { get; set; }
+        public virtual Department? manage { get; set; }
 
 
     }

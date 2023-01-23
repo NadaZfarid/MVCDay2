@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+<html>
+    <head>
+      <title>Profile</title>
+    </head>
+    <body>
+        <ul>
+            <li>FName : @Model.Fname</li>
+            <li>LName : @Model.LName</li>
+            <li>Address: @Model.Address</li>
+            <li>Gender: @Model.Gender</li>
+            <li>BDate : @Model.BDate</li>
+            <li>Salary : @Model.Salary</li>
+@*            <li>Supervisor:@Model.</li>
+*@
+        </ul>
+        <button><a href="/Dependent/Dependent">Dependent</a></button>
+    </body>
+</html>

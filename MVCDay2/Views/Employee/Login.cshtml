@@ -1,0 +1,28 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+<html>
+    <head>
+        <title>Login</title>
+    </head>
+    <body>
+        <form action="/Employee/LoginEmployee">
+            <table>
+        <tr><td><label>First Name</label></td>
+                   <td> <input id="fname" name="fname" type="text" /> </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>SSN</label></td>
+                   <td> <input id="SSN" name="SSN" type="number" />
+            </td>
+                </tr>
+        </table>
+        <input type="submit" value="Login" />
+
+        </form>
+    </body>
+</html>

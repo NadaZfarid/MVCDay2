@@ -15,10 +15,10 @@ namespace MVCDay2.Models
         public string Name { get; set; }
         [StringLength(50)]
         public string Location { get; set; }
-        public virtual Department department { get; set; }
+        public virtual Department? department { get; set; }
         [ForeignKey("department")]
-        public int Dept_id { get; set; }
-        public virtual List<Emp_Proj> Emp_Projs { get; set; }
+        public int? Dept_id { get; set; }
+        public virtual List<Emp_Proj>? Emp_Projs { get; set; }
 
     }
 }
