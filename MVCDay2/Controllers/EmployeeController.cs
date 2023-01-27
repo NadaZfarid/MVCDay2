@@ -64,8 +64,10 @@ namespace MVCDay2.Controllers
             var check= DB.Employees.Where(c=>c.Fname==employee.Fname && c.SSN==employee.SSN).Any();
             if (check)
             {
-                HttpContext.Session.SetInt32("SSN", employee.SSN);
-                return RedirectToAction("Profile");
+               
+                    HttpContext.Session.SetInt32("SSN", employee.SSN);
+                    return RedirectToAction("Profile");
+                
 
             }
             else
@@ -77,8 +79,13 @@ namespace MVCDay2.Controllers
         public IActionResult Profile()
         {
             int id = (int)HttpContext.Session.GetInt32("SSN");
-            Employee employee = DB.Employees.Where(c => c.SSN == id).SingleOrDefault();
-            return View("Profile",employee);
+                var employee = DB.Employees.Include(e=>e.department).Where(c => c.SSN == id).Select(e => new {e.SSN,e.Fname,e.LName,e.BDate,e.Gender,manager=e.department.Manage_SSN,e.Address,e.Salary,Super=e.super.Fname}).SingleOrDefault();
+                return View("Profile", employee);
+            
+        }
+        public ViewResult Manager()
+        {
+            return View();
         }
     }
 }

@@ -1,0 +1,21 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+<h1> Project Hours : </h1>
+<p>@TempData["msg"]</p>
+@foreach (var hours in Model)
+{
+
+    <ul>
+        <li>Project Name: @hours.projectName</li>
+        <li>Employee Name: @hours.employeeName</li>
+        <li>Hours: @hours.Hours</li>
+        <li><a asp-action="Edit" asp-controller="WorkFor" asp-route-id="@hours.Emp_SSN" asp-route-secid="@hours.Proj_Id">Edit</a></li>
+        <li><a asp-action="Delete" asp-controller="WorkFor" asp-route-id="@hours.Emp_SSN" asp-route-secid="@hours.Proj_Id">Delete</a></li>
+    </ul>
+    <hr />
+}

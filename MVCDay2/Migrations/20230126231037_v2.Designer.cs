@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCDay2.Migrations
 {
     [DbContext(typeof(CompanyDbContext))]
-    [Migration("20230122142204_v2")]
+    [Migration("20230126231037_v2")]
     partial class v2
     {
         /// <inheritdoc />
@@ -55,11 +55,11 @@ namespace MVCDay2.Migrations
 
             modelBuilder.Entity("MVCDay2.Models.Dependent", b =>
                 {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int?>("Emp_SSN")
                         .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("BDate")
                         .HasColumnType("Date");
@@ -72,9 +72,7 @@ namespace MVCDay2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Name", "Emp_SSN");
-
-                    b.HasIndex("Emp_SSN");
+                    b.HasKey("Emp_SSN", "Name");
 
                     b.ToTable("Dependents");
                 });
@@ -100,7 +98,7 @@ namespace MVCDay2.Migrations
                     b.Property<int?>("Proj_Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Hours")
+                    b.Property<int?>("Hours")
                         .HasColumnType("int");
 
                     b.HasKey("Emp_SSN", "Proj_Id");

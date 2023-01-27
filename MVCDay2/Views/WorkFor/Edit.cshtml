@@ -1,0 +1,15 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+<form asp-action="EditHours" asp-controller="WorkFor" method="post">
+    <li>Project Name: @Model.projectName</li>
+    <li>Employee Name: @Model.employeeName</li>
+    <label class="form-label">Hours</label>
+    <input type="number" name="Hours" value="@Model.Hours" class="form-control" />
+    <input id="Proj_Id" name="Proj_Id" type="number" value="@Model.Proj_Id" style="visibility:hidden" /><br />
+    <input id="Emp_SSN" name="Emp_SSN" type="text" value="@Model.Emp_SSN" style="visibility:hidden" /><br />
+    <input type="submit" value="Edit" class="form-control-sm btn btn-primary" />
+</form>

@@ -11,6 +11,6 @@ namespace MVCDay2.Models
         [ForeignKey("project")]
         public int? Proj_Id { get; set; }
 
-        public int Hours { get; set; }
+        public int? Hours { get; set; }
     }
 }

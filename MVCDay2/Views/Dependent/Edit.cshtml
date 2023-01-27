@@ -4,13 +4,10 @@
 @{
     Layout = "_Layout";
 }
-<h1>Edit Dependent</h1>
+<h1>Edit Dependent : @Model.Name </h1>
 
-<form action="/Dependent/EditDependent">
-    <input id="Dep_id" name="DepId" type="number" value="@Model.DepId" style="visibility:hidden" /><br />
+<form asp-action="EditDependent" asp-controller="Dependent">
 
-    <label> Name</label>
-    <input id="name" name="name" type="text" value= "@Model.Name"/><br />
 
     <label>RelationShip</label>
     <input id="Relationship" name="Relationship" type="text" value="@Model.Relationship" /><br />
@@ -21,6 +18,7 @@
     <input id="Gender" name="Gender" type="text" value="@Model.Gender" /><br />
 
     <input id="Emp_SSN" name="Emp_SSN" type="number" value="@Context.Session.GetInt32("SSN")" style="visibility:hidden" /><br />
+    <input id="name" name="name" type="text" value="@Model.Name" style="visibility:hidden"  /><br />
 
 
     <input type="submit" value="Edit" />

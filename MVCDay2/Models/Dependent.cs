@@ -5,9 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace MVCDay2.Models
 {
     public class Dependent
-    {
-        [Key]
-        public int DepId { get; set; }
+    { 
         public string Name { get; set; }
         [StringLength(1)]
         public string? Gender { get; set; }

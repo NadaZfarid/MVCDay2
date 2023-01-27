@@ -52,33 +52,24 @@ namespace MVCDay2.Migrations
 
             modelBuilder.Entity("MVCDay2.Models.Dependent", b =>
                 {
-                    b.Property<int>("DepId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int?>("Emp_SSN")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepId"));
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("BDate")
                         .HasColumnType("Date");
-
-                    b.Property<int?>("Emp_SSN")
-                        .HasColumnType("int");
 
                     b.Property<string>("Gender")
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Relationship")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DepId");
-
-                    b.HasIndex("Emp_SSN");
+                    b.HasKey("Emp_SSN", "Name");
 
                     b.ToTable("Dependents");
                 });
@@ -104,7 +95,7 @@ namespace MVCDay2.Migrations
                     b.Property<int?>("Proj_Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Hours")
+                    b.Property<int?>("Hours")
                         .HasColumnType("int");
 
                     b.HasKey("Emp_SSN", "Proj_Id");
@@ -203,7 +194,9 @@ namespace MVCDay2.Migrations
                 {
                     b.HasOne("MVCDay2.Models.Employee", "Dep_employee")
                         .WithMany("Dependents")
-                        .HasForeignKey("Emp_SSN");
+                        .HasForeignKey("Emp_SSN")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Dep_employee");
                 });

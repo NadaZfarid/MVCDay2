@@ -30,15 +30,17 @@ namespace MVCDay2.Controllers
             List<Dependent> dependents = DB.Dependents.Where(d => d.Emp_SSN == id).ToList();
             return View("Dependent", dependents);
         }
-        public IActionResult Edit(int id)
+        public IActionResult Edit(string id)
         {
-
-            Dependent dependent = DB.Dependents.SingleOrDefault(c => c.DepId == id);
+            int id2 = (int)HttpContext.Session.GetInt32("SSN");
+            Dependent dependent = DB.Dependents.SingleOrDefault(c => c.Emp_SSN ==id2&& c.Name==(object)id);
             return View("Edit", dependent);
         }
         public IActionResult EditDependent(Dependent dependent)
         {
-            Dependent oldDependent = DB.Dependents.SingleOrDefault(c => c.DepId==dependent.DepId);
+            int id = (int)HttpContext.Session.GetInt32("SSN");
+
+            Dependent oldDependent = DB.Dependents.SingleOrDefault(c => c.Emp_SSN == dependent.Emp_SSN && c.Name == dependent.Name);
             oldDependent.Name = dependent.Name;
             oldDependent.BDate=(DateTime)dependent.BDate;
             oldDependent.Gender = dependent.Gender;
@@ -48,14 +50,14 @@ namespace MVCDay2.Controllers
             List<Dependent> dependents = DB.Dependents.Where(d => d.Emp_SSN == dependent.Emp_SSN).ToList();
             return View("Dependent", dependents);
         }
-        public IActionResult Delete(int id)
+        public IActionResult Delete(string id)
         {
-
-            Dependent dependent = DB.Dependents.Where(c => c.DepId==id).SingleOrDefault();
+            int id2 = (int)HttpContext.Session.GetInt32("SSN");
+            Dependent dependent = DB.Dependents.Where(c => c.Emp_SSN == id2 && c.Name ==(object) id).SingleOrDefault();
             DB.Dependents.Remove(dependent);
             DB.SaveChanges();
             TempData["msg"] = "you Deleted a dependent";
-            List<Dependent> dependents = DB.Dependents.Where(d => d.Emp_SSN == id).ToList();
+            List<Dependent> dependents = DB.Dependents.Where(d => d.Emp_SSN == id2).ToList();
             return View("Dependent", dependents);
         }
     }

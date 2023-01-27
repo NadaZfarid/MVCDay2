@@ -18,6 +18,7 @@ namespace MVCDay2.Models
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Dependent>().HasKey("Emp_SSN", "Name");
             modelBuilder.Entity<Emp_Proj>().HasKey("Emp_SSN", "Proj_Id");
             modelBuilder.Entity<Dept_loc>().HasKey("Dept_id", "Locatoin");
             modelBuilder.Entity<Department>().HasOne(c => c.employee).WithOne(c => c.department);

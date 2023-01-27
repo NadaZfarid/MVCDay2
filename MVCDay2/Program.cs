@@ -18,6 +18,41 @@ namespace MVCDay2
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.Use(async (context, nex) =>
+            {
+                Console.WriteLine("middleware 1 -> forward");
+                if (context.Request.Cookies.ContainsKey("ReqNum"))
+                {
+                    //inc
+                    int num = int.Parse(context.Request.Cookies["ReqNum"]);
+                    context.Response.Cookies.Append("ReqNum", (++num).ToString());
+                    if (num>=1&&num <= 10)
+                    {
+                        context.Response.Cookies.Append("stars", "1");
+                    }else if (num >= 11 && num <= 20)
+                    {
+                        context.Response.Cookies.Append("stars", "2");
+                    }
+                    else if (num >= 21 && num <= 30)
+                    {
+                        context.Response.Cookies.Append("stars", "3");
+                    }
+                    else if (num >= 31 && num <= 40)
+                    {
+                        context.Response.Cookies.Append("stars", "4");
+                    }
+                    else if (num >=41)
+                    {
+                        context.Response.Cookies.Append("stars", "5");
+                    }
+                }
+                else
+                {
+                    context.Response.Cookies.Append("ReqNum", "1");
+                }
+                await nex();
+                Console.WriteLine("middleware 1 -> back");
+            });
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -28,7 +63,7 @@ namespace MVCDay2
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}/{secid?}");
 
             app.Run();
         }

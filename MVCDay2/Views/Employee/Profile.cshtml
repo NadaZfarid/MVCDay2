@@ -16,9 +16,14 @@
             <li>Gender: @Model.Gender</li>
             <li>BDate : @Model.BDate</li>
             <li>Salary : @Model.Salary</li>
-@*            <li>Supervisor:@Model.</li>
-*@
+            <li>Supervisor:@Model.Super</li>
+
         </ul>
-        <button><a href="/Dependent/Dependent">Dependent</a></button>
+    <button class="btn btn-primary"><a href="/Dependent/Dependent" class="btn btn-primary">Dependent</a></button>
+    @if (Model.manager==Model.SSN)
+    {
+        <button class="btn btn-primary"><a asp-action="DepartmentDetails" asp-controller="Department"  class="btn btn-primary">Department</a></button>
+    }
+
     </body>
 </html>
