@@ -18,12 +18,11 @@ namespace MVCDay2
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            app.Use(async (context, nex) =>
+            app.Use(async (context, next) =>
             {
-                Console.WriteLine("middleware 1 -> forward");
                 if (context.Request.Cookies.ContainsKey("ReqNum"))
                 {
-                    //inc
+                    
                     int num = int.Parse(context.Request.Cookies["ReqNum"]);
                     context.Response.Cookies.Append("ReqNum", (++num).ToString());
                     if (num>=1&&num <= 10)
@@ -50,8 +49,7 @@ namespace MVCDay2
                 {
                     context.Response.Cookies.Append("ReqNum", "1");
                 }
-                await nex();
-                Console.WriteLine("middleware 1 -> back");
+                await next();
             });
             app.UseStaticFiles();
 

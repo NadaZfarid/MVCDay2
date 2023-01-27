@@ -64,11 +64,8 @@ namespace MVCDay2.Controllers
             var check= DB.Employees.Where(c=>c.Fname==employee.Fname && c.SSN==employee.SSN).Any();
             if (check)
             {
-               
                     HttpContext.Session.SetInt32("SSN", employee.SSN);
                     return RedirectToAction("Profile");
-                
-
             }
             else
             {
@@ -83,9 +80,6 @@ namespace MVCDay2.Controllers
                 return View("Profile", employee);
             
         }
-        public ViewResult Manager()
-        {
-            return View();
-        }
+        
     }
 }
