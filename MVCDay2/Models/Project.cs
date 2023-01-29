@@ -12,6 +12,7 @@ namespace MVCDay2.Models
         [Key]
         public int Number { get; set; }
         [StringLength(50)]
+        [Display(Name = "Project Name")]
         public string Name { get; set; }
         [StringLength(50)]
         public string Location { get; set; }

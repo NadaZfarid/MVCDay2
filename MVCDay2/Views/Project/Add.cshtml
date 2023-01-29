@@ -1,4 +1,4 @@
-﻿@model Project
+﻿@model ProjectVM
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -7,14 +7,28 @@
 }
 <h1>Add Project</h1>
 
-<form asp-action="AddProject" asp-controller="Project" method="post">
+<form asp-action="Add" asp-controller="Project" method="post">
 
     <label class="form-label">Project Name</label>
     <input id="name" asp-for="Name" type="text" class="form-control" /><br />
 
+    <div>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
     <label class="form-label">Location</label>
     <input id="Location" asp-for="Location" type="text" class="form-control" /><br />
-
+    <div>
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmLocation"></label>
+        <input asp-for="ConfirmLocation" class="form-control" />
+        <div>
+            <span asp-validation-for="ConfirmLocation" class="text-danger"></span>
+        </div>
+    </div>
     <label class="form-label"> Department</label>
 
     @Html.DropDownListFor(p=>p.Dept_id ,ViewBag.Departments as SelectList,"Choose One",new{@class="form-control"})

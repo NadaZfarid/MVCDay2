@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MVCDay2.Models;
+using MVCDay2.ViewModels;
 
 namespace MVCDay2.Controllers
 {
@@ -41,19 +43,41 @@ namespace MVCDay2.Controllers
             var projects = DB.Projects.Select(p => new { p.Number, p.Name, p.Location, DepartmentName = p.department.Name }).ToList();
             return View("ProjectList", projects);
         }
+        [HttpGet]
         public IActionResult Add()
         {
             var department = DB.Departments.Select(p => new { p.Number, p.Name }).ToList();
             ViewBag.Departments = new SelectList(department, "Number", "Name");
             return View();
         }
-        public IActionResult AddProject(Project project)
-        {
-            DB.Projects.Add(project);
-            DB.SaveChanges();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
 
-            var projects = DB.Projects.Select(p => new { p.Number, p.Name, p.Location, DepartmentName = p.department.Name }).ToList();
-            return View("ProjectList", projects);
+        public IActionResult Add(ProjectVM project)
+        {
+            if (ModelState.GetFieldValidationState("Name") == ModelValidationState.Valid
+                && ModelState.GetFieldValidationState("Location") == ModelValidationState.Valid
+                && !(project.Location.Contains("Cairo") || project.Location.Contains("Alex")|| project.Location.Contains("Giza")))
+            {
+                ModelState.AddModelError("Location", "Location Must be in Cairo, Alex or Giza.");
+            }
+            if (ModelState.IsValid)
+            {
+                Project newProject = new Project()
+                {
+                    Name = project.Name,
+                    Location = project.Location,
+                    Dept_id= project.Dept_id,
+                };
+                DB.Projects.Add(newProject);
+                DB.SaveChanges();
+                var projec = DB.Projects.Select(p => new { p.Number, p.Name, p.Location, DepartmentName = p.department.Name }).ToList();
+                return View("ProjectList", projec);
+            }
+            var department = DB.Departments.Select(p => new { p.Number, p.Name }).ToList();
+            ViewBag.Departments = new SelectList(department, "Number", "Name");
+            return View();
+
         }
     }
 }
