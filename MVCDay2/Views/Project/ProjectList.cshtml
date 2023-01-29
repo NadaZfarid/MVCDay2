@@ -1,0 +1,21 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+<h1>Projects</h1>
+
+@foreach (var project in Model)
+{
+
+    <ul>
+        <li>Name: @project.Name</li>
+        <li>Location: @project.Location</li>
+        <li>Department: @project.DepartmentName</li>
+        <li><a asp-action="Edit" asp-controller="Project" asp-route-id="@project.Number">Edit</a></li>
+        <li><a asp-action="Delete" asp-controller="Project" asp-route-id="@project.Number">Delete</a></li>
+    </ul><hr />
+}
+
+<a asp-action="Add" asp-controller="Project">Add Project</a>

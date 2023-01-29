@@ -1,0 +1,23 @@
+﻿@model Department
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+<h1>Add Department</h1>
+
+@using(Html.BeginForm("AddDepartment","Department",FormMethod.Post))
+{
+    @Html.LabelFor(d=>d.Name, new{@class="form-label"})
+    @Html.TextBoxFor(d=>d.Name,new{@class="form-control"})
+
+    @Html.LabelFor(d=>d.Manage_SSN, new{@class="form-label"})
+    @Html.DropDownListFor(d=>d.Manage_SSN,ViewBag.Employees as SelectList,"choose one",new{@class="form-control"})
+
+    @Html.LabelFor(d=>d.StartDate, new{@class="form-label"})
+    @Html.TextBoxFor(d=>d.StartDate,new{@class="form-control"})
+    <br />
+    <input type="submit" class="btn btn-primary" value="Add" />
+
+}

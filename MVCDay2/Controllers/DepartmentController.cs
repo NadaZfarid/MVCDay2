@@ -1,52 +1,60 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using MVCDay2.Models;
 
 namespace MVCDay2.Controllers
 {
     public class DepartmentController : Controller
     {
-        CompanyDbContext DB = new CompanyDbContext();
-        public IActionResult DepartmentDetails()
+        CompanyDbContext DB;
+        public DepartmentController()
         {
-            int id = (int)HttpContext.Session.GetInt32("SSN");
-            var department = DB.Departments.Where(d=>d.Manage_SSN==id).Select(d=> new {d.Number,d.Name,ManagerName=d.employee.Fname,d.StartDate,projects=d.Projects}).SingleOrDefault();
-            var employee = DB.Employees.Where(d=>d.Dept_id==department.Number).ToList();
-            ViewBag.Employees = employee;
-            return View("DepartmentDetails",department);
+            DB= new CompanyDbContext();
         }
-        public IActionResult Projects(int id)
+        public IActionResult Departments()
         {
-           var projects = DB.Departments.Where(p => p.Number == id).Select(d => new { projects = d.Projects }).SingleOrDefault();
-            return View("Projects", projects);
+            var departments = DB.Departments.Select(d=> new {d.Name,d.Number,manager = d.employee.Fname,d.StartDate}).ToList();
+            return View("Departments",departments);
         }
-        [HttpGet]
-        public IActionResult AddEmpProj(int id)
+        public IActionResult Edit(int id)
         {
-            var projects = DB.Departments.Where(p => p.Number == id ).Select(d => new { projects = d.Projects }).SingleOrDefault();
-            var employee = DB.Employees.Where(d => d.Dept_id == id).ToList();
-            ViewBag.Employees = employee;
-            return View("AddEmpProj",projects);
+            Department department = DB.Departments.Where(d=>d.Number==id).SingleOrDefault();
+            List<Employee> employees = DB.Employees.Where(e=>e.Dept_id==id).ToList();
+            ViewBag.Employees = new SelectList(employees, "SSN", "Fname");
+            return View("Edit",department);
         }
-        [HttpPost]
-        public IActionResult Add(Emp_Proj emp_Proj, int[]Pnum)
+        public IActionResult EditDepartment(Department department)
         {
-            foreach(var item in Pnum)
-            {
-                Emp_Proj emp = new Emp_Proj()
-                {
-                    Emp_SSN = emp_Proj.Emp_SSN,
-                    Proj_Id = item
-                };
-                DB.Emp_Projs.Add(emp);
-                DB.SaveChanges();
-
-            }
-            int id = (int)HttpContext.Session.GetInt32("SSN");
-            var department = DB.Departments.Where(d => d.Manage_SSN == id).Select(d => new { d.Number, d.Name, ManagerName = d.employee.Fname, d.StartDate }).SingleOrDefault();
-            return RedirectToAction("DepartmentDetails", department);
+            Department oldDepartment = DB.Departments.Where(d => d.Number == department.Number).SingleOrDefault();
+            oldDepartment.Name = department.Name;
+            oldDepartment.StartDate = department.StartDate;
+            DB.SaveChanges();
+            var departments = DB.Departments.Select(d => new { d.Name, d.Number, manager = d.employee.Fname, d.StartDate }).ToList();
+            return View("Departments", departments);
         }
-        
+        public IActionResult Delete(int id)
+        {
+            Department department =DB.Departments.Where(d=>d.Number==id).SingleOrDefault();
+            DB.Departments.Remove(department);
+            DB.SaveChanges();
+            var departments = DB.Departments.Select(d => new { d.Name, d.Number, manager = d.employee.Fname, d.StartDate }).ToList();
+            return View("Departments", departments);
+        }
+        public IActionResult Add()
+        {
+            List<Employee> employees = DB.Employees.ToList();
+            ViewBag.Employees = new SelectList(employees,"SSN","Fname");
+            return View();
+        }
+        public IActionResult AddDepartment(Department department)
+        {
+            DB.Departments.Add(department);
+            DB.SaveChanges();
+            Employee employee = DB.Employees.Where(e=>e.SSN==department.Manage_SSN).SingleOrDefault();
+            employee.Dept_id = department.Number;
+            DB.SaveChanges();
+            var departments = DB.Departments.Select(d => new { d.Name, d.Number, manager = d.employee.Fname, d.StartDate }).ToList();
+            return RedirectToAction("Departments", departments);
+        }
     }
 }
