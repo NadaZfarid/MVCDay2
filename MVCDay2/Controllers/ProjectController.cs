@@ -57,7 +57,7 @@ namespace MVCDay2.Controllers
         {
             if (ModelState.GetFieldValidationState("Name") == ModelValidationState.Valid
                 && ModelState.GetFieldValidationState("Location") == ModelValidationState.Valid
-                && !(project.Location.Contains("Cairo") || project.Location.Contains("Alex")|| project.Location.Contains("Giza")))
+                && !(project.Location.Contains("Cairo") || project.Location.Contains("Alex") || project.Location.Contains("Giza")))
             {
                 ModelState.AddModelError("Location", "Location Must be in Cairo, Alex or Giza.");
             }
@@ -79,5 +79,28 @@ namespace MVCDay2.Controllers
             return View();
 
         }
+        //public IActionResult validateLocation(string Location)
+        //{
+        //    if (Location.Contains("Cairo")||Location.Contains("Alex")|| Location.Contains("Giza"))
+        //    {
+              
+        //        return Json(true);
+        //    }
+        //    return Json(false);
+        //}
+
+        public IActionResult EditEmpProj()
+        {
+            var employees = DB.Employees.Select(e => new {e.SSN,FullName=e.Fname+" "+e.LName}).ToList();
+            ViewBag.Employees = new SelectList(employees,"SSN","FullName");
+            return View();
+        }
+        public IActionResult EditEmpProj_emp(int id)
+        {
+            var project = DB.Emp_Projs.Where(e => e.Emp_SSN == id).Select(e => new { e.Proj_Id, Name = e.project.Name }).ToList();
+            ViewBag.projects = new SelectList(project, "Proj_Id", "Name");
+            return PartialView("_ProjectList");
+        }
     }
 }
+
